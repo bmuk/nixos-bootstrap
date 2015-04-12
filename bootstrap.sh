@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 
 # Save the old configuration
 mv /etc/nixos/configuration.nix /etc/nixos/configuration.nix.old

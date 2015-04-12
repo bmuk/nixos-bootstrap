@@ -1,4 +1,4 @@
-﻿{ config, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   imports = [ <nixos/modules/installer/cd-dvd/installation-cd-graphical.nix> ];
