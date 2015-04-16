@@ -40,10 +40,10 @@ cp ./configuration.nix /mnt/etc/nixos/configuration.nix
 nixos-install
 
 # Unmount everything
-#umount /mnt/home
-#umount /mnt/boot
-#umount /mnt
-#zfs umount -a
+umount /mnt/home
+umount /mnt/boot
+umount /mnt
+zfs umount -a
 
 # reboot
-#reboot
+reboot
