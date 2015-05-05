@@ -12,7 +12,7 @@ HOSTNAME_FILE="{ config, pkgs, ... }:
 }"
 echo "$HOSTNAME_FILE" > ./hostname.nix
 
-# Save the old configuration
+# Don't need the default config
 rm /etc/nixos/configuration.nix
 
 # Instate our new configuration (zfs)
@@ -45,10 +45,11 @@ mount /dev/sda1 /mnt/boot
 nixos-generate-config --root /mnt
 
 # Move the correct configuration into place
-mv /mnt/etc/nixos/hardware-configuration.nix /tmp/
+mv /mnt/etc/nixos/hardware-configuration.nix /tmp/hardware-configuration.nix
 rm -rf /mnt/etc/nixos/
 git clone https://github.com/bmuk/nixos-bootstrap /mnt/etc/nixos/
 cp ./hostname.nix /mnt/etc/nixos/
+mv /tmp/hardware-configuration.nix /mnt/etc/nixos/hardware-configuration.nix
 
 # Install nixos
 nixos-install
