@@ -17,6 +17,7 @@
     supportedFilesystems = [ "zfs" ];
   };
 
+  # hostname gets defined by the install script
   # need them to respond to pings to know they are on when the lid is closed
   networking = {
     networkmanager.enable = true;
