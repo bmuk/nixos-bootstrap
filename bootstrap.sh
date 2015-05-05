@@ -1,7 +1,19 @@
 #!/usr/bin/env bash
 
+# Get the laptop number to craft the hostname
+read -p "Enter the laptop's number: " -e LAPTOP_NUMBER
+HOSTNAME="\"thinkpad-$LAPTOP_NUMBER\""
+
+# Create the nix file that specifies the hostname
+HOSTNAME_FILE="{ config, pkgs, ... }:
+
+{
+  networking.hostName = $HOSTNAME;
+}"
+echo "$HOSTNAME_FILE" > ./hostname.nix
+
 # Save the old configuration
-mv /etc/nixos/configuration.nix /etc/nixos/configuration.nix.old
+rm /etc/nixos/configuration.nix
 
 # Instate our new configuration (zfs)
 cp ./install_configuration.nix /etc/nixos/configuration.nix
@@ -33,8 +45,10 @@ mount /dev/sda1 /mnt/boot
 nixos-generate-config --root /mnt
 
 # Move the correct configuration into place
-mv /mnt/etc/nixos/configuration.nix /mnt/etc/nixos/configuration.nix.old
-cp ./configuration.nix /mnt/etc/nixos/configuration.nix
+mv /mnt/etc/nixos/hardware-configuration.nix /tmp/
+rm -rf /mnt/etc/nixos/
+git clone https://github.com/bmuk/nixos-bootstrap /mnt/etc/nixos/
+cp ./hostname.nix /mnt/etc/nixos/
 
 # Install nixos
 nixos-install
