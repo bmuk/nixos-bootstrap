@@ -57,11 +57,17 @@
     };
     xserver = {
       enable = true;
-      desktopManager.xfce.enable = true;
+      desktopManager = {
+        xfce.enable = true;
+        xterm.enable = false;
+        default = "xfce";
+      };
       synaptics = {
         enable = true;
         twoFingerScroll = true;
       };
     };
+    # adds volume support (i.e. usb handling) to thunar
+    udisks.enable = true;
   };
 }
