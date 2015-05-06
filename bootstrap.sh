@@ -3,7 +3,7 @@
 # Get the laptop number to craft the hostname
 read -p "Enter the laptop's number: " -e LAPTOP_NUMBER
 HOSTNAME="thinkpad-$LAPTOP_NUMBER"
-HOSTID=$(head -c4 /dev/urandom | od -A none -t x4)
+HOSTID=$(head -c4 /dev/urandom | od -A none -t x4 | tr -d " ")
 
 # Create the nix file that specifies the hostname
 HOSTNAME_FILE="{ config, pkgs, ... }:
