@@ -9,8 +9,8 @@ HOSTID=$(head -c4 /dev/urandom | od -A none -t x4)
 HOSTNAME_FILE="{ config, pkgs, ... }:
 
 {
-  networking.hostName = "$HOSTNAME";
-  networking.hostId = "$HOSTID";
+  networking.hostName = \"$HOSTNAME\";
+  networking.hostId = \"$HOSTID\";
 }"
 echo "$HOSTNAME_FILE" > ./hostname.nix
 
