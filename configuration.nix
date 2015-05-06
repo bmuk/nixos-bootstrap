@@ -68,6 +68,6 @@
       };
     };
     # adds volume support (i.e. usb handling) to thunar
-    udisks.enable = true;
+    udisks2.enable = true;
   };
 }
