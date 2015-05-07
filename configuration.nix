@@ -40,7 +40,9 @@
       description = "Student";
       extraGroups = [ "wheel" "networkmanager" ];
       password = "cybersecuritylab";
-      openssh.authorizedKeys.keys = [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC096XtxBRaho/l72r/5zKKcbgj1GvyN6j3qm7lAclx3op5GPhfimWGLmTthdOB7jO9gTPgjz+q0uJI2NOHBzF59WxJOV/37lKzvzglHxDMaPkRgtpIVQi5O+BQpy8jvU5nWhJ/FKhqRYZHmfPUwm9GGc0eJAPwETjN3pZabN1V6nFZjjntwjN1Ml/8CrMPpxIKlQlBwuxDm2YznnHVBBNkel921+FBs+oTmCQSYR3ljJ1tzt35Mkt7btjMfqmFHUGbhumbN8mBPW5aj591nB25cw7IR4r7fj1rqiJqbBJ7RzJUea9H52R47tfvnSHH6hOp2B0G0NkdaCwnh1lx5YAD Britt@WIN-VG68FPVJEA1" ];
+      openssh.authorizedKeys.keys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC096XtxBRaho/l72r/5zKKcbgj1GvyN6j3qm7lAclx3op5GPhfimWGLmTthdOB7jO9gTPgjz+q0uJI2NOHBzF59WxJOV/37lKzvzglHxDMaPkRgtpIVQi5O+BQpy8jvU5nWhJ/FKhqRYZHmfPUwm9GGc0eJAPwETjN3pZabN1V6nFZjjntwjN1Ml/8CrMPpxIKlQlBwuxDm2YznnHVBBNkel921+FBs+oTmCQSYR3ljJ1tzt35Mkt7btjMfqmFHUGbhumbN8mBPW5aj591nB25cw7IR4r7fj1rqiJqbBJ7RzJUea9H52R47tfvnSHH6hOp2B0G0NkdaCwnh1lx5YAD Britt@WIN-VG68FPVJEA1"
+      ];
     };
   };
 
