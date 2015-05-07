@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+﻿{ config, pkgs, ... }:
 
 {
   imports =
@@ -42,6 +42,7 @@
       password = "cybersecuritylab";
       openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC096XtxBRaho/l72r/5zKKcbgj1GvyN6j3qm7lAclx3op5GPhfimWGLmTthdOB7jO9gTPgjz+q0uJI2NOHBzF59WxJOV/37lKzvzglHxDMaPkRgtpIVQi5O+BQpy8jvU5nWhJ/FKhqRYZHmfPUwm9GGc0eJAPwETjN3pZabN1V6nFZjjntwjN1Ml/8CrMPpxIKlQlBwuxDm2YznnHVBBNkel921+FBs+oTmCQSYR3ljJ1tzt35Mkt7btjMfqmFHUGbhumbN8mBPW5aj591nB25cw7IR4r7fj1rqiJqbBJ7RzJUea9H52R47tfvnSHH6hOp2B0G0NkdaCwnh1lx5YAD Britt@WIN-VG68FPVJEA1"
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbWaTXfa7ut/bXssVNa/6ujpkk9jlVpcjJqq7RFtJ7aeJEC3EV97V4WeyqE9CUj3C8GD5QwaBVih7FpWHkk9eLA55rNVmTs9VV+M7OHrbituMPs/JF9KOVRcyRasFWQc2+u4RnxxOShiTiNIE8irp/dTJKb4IdvLY3WLR6l3p7ph+QxAlf/LD9lhZTCHfL/1+AL6atM4OH5J4Zh7KINMCN4dnTgF0gRRlabdSRDA1WPT1o39qq3n+pd44FQ9+6ZHvjR6Zk+RPM8c6IlsRcgzjqqtwxudVOPUMJPlCsYc9Fk4Jx2zijkutLD0HVVYkVe/XNB0mgX5COx/gZhaDSnVlf student@thinkpad-1"
       ];
     };
   };
