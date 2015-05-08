@@ -51,6 +51,7 @@
     chromium
     erlang
     git
+    nixops # only used by thinkpad-1 at this point
   ];
 
   services = {
