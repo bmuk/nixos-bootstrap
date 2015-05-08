@@ -1,0 +1,196 @@
+* nixops
+** declarative specification of networks
+driven by one or more *network models*
+*** network models
+encapsulate multiple (partial) nixos configurations
+typically split into logical and physical models
+**** logical
+machine independent configuration
+captures *what* we want running, regardless of what kind of machine it will be running on
+example code illustrates the logical network model capturing the configuration properties for a Trac deployment consisting of three machines
+
+#+NAME: network-logical.nix
+#+BEGIN_SRC nix
+{
+  network.description = "Trac deployment";
+
+  storage =
+    { pkgs, ... }:
+
+    { services.nfs.server.enable = true;
+      services.nfs.server.exports = ''
+        /repos 192.168.1.0/255.255.255.0(rw,no_root_squash)
+      '';
+      services.nfs.server.createMountPoints = true;
+    };
+
+  postgresql =
+    { pkgs, ... }:
+
+    { services.postgresql.enable = true;
+      services.postgresql.package = pkgs.postgresql;
+      services.postgresql.enableTCPIP = true;
+      services.postgresql.authentication = ''
+        local all all                trust
+        host  all all 127.0.0.1/32   trust
+        host  all all ::1/128        trust
+        host  all all 192.168.1.0/24 trust
+      '';
+    };
+
+  webserver =
+    { pkgs, ... }:
+
+    { fileSystems = [
+        { mountPoint = "/repos";
+          device = "storage:/repos";
+          fsType = "nfs";
+        }
+      ];
+      services.httpd.enable = true;
+      services.httpd.adminAddr = "root@localhost";
+      services.httpd.extraSubservices = [
+        { serviceType = "trac"; }
+      ];
+      environment.systemPackages = [
+        pkgs.pythonPackages.trac
+        pkgs.subversion
+      ];
+    };
+}
+#+END_SRC
+
+***** storage
+responsible for storing svn source code repositories in /repos
+makes /repos available as an NFS mount
+***** postgresql
+runs a postgresql database server storing the tickets
+***** webserver
+runs apache hosting trac front-end
+mounts /repos as a network file system connecting to the storage machine so that trac can view the repositories inside
+**** physical
+machine specific configuration
+nixos configuration cannot be deplyed without machine specific settings
+
+#+NAME: network-physical.nix
+#+BEGIN_SRC nix
+{
+  storage = 
+    { pkgs, ...}:
+    
+    { boot.loader.grub.version = 2;
+      boot.loader.grub.device = "/dev/sda";
+
+      fileSystems = [
+        { mountPoint = "/";
+          label = "root";
+        }
+      ];
+
+      swapDevices = [
+        { label = "swap"; }
+      ];
+
+      networking.hostName = "storage";
+    };
+
+  postgresql = ...
+
+  webserver = ...
+}
+#+END_SRC
+
+***** storage
+grub version 2 used as bootloader, installed on the MBR of the hdd partition /dev/sda
+hdd partition with label: root should be mounted as root partition
+hdd partition with label: swap should be mounted as swap partition
+the hostname of the system should be 'storage'
+*** deployment
+by invoking nixops with the two network models shown earlier as parameters, we can create a nixops *deployment* - an environment containing a set of machines that belong together
+~nixops create ./network-logical.nix ./network-physical.nix -d test~
+this creates a deployment named /test/
+~nixops deploy -d test~
+this actually deploys the system configurations
+**** nixops deploy
+invokes nix package manager to *build* all the configurations
+*transfers* their corresponding package closures to the target machines
+*activates* the nixos configurations on those machines
+**** upgrading
+if we runn the deploy command after altering any of the network models, the system is *upgraded*
+only the packages which have changed are built and transferred
+**** virtualbox
+we can replace the physical network model with the following:
+
+#+NAME: network-vbox.nix
+#+BEGIN_SRC nix
+{
+  storage = {
+    deployment.targetEnv = "virtualbox";
+    deployment.virtualbox.memorySize = 1024;
+  };
+
+  postgresql = ...
+
+  webserver = ...
+}
+#+END_SRC
+
+this states *storage* is a VirtualBox vm requiring 1024 MiB of RAM
+when we instantiate a new deployment with the above physical network model and deploy it:
+~nixops create ./network-logical.nix ./network-vbox.nix -d vbox~
+~nixops deploy -d vbox~
+nixops first *instantiates* the vms through virtualbox and populates them with a basic nixos image
+**** amazon ec2
+we can also create a physical model like this:
+
+#+NAME: network-ec2.nix
+#+BEGIN_SRC nix
+let
+  region = "us-east-1";
+  accessKeyId = "ABCD..."; # symbolic name looked up in ~/.ec2-keys
+
+  ec2 =
+    { resources, ... }:
+    
+    { deployment.targetEnv = "ec2";
+      deployment.ec2.accessKeyId = accessKeyId;
+      deployment.ec2.region = region;
+      deployment.ec2.instanceType = "m1.medium";
+      deployment.ec2.keyPair = resources.ec2KeyPairs.my-key-pair;
+      deployment.ec2.securityGroups = [ "my-security-group" ];
+    };
+in
+{
+  storage = ec2;
+
+  postgresql = ec2;
+
+  webserver = ec2;
+
+  resources.ec2KeyPairs.my-key-pair = {
+    inherit region accessKeyId;
+  };
+}
+#+END_SRC
+
+which states *storage* is a vm in the Amazon EC2 cloud
+~nixops create ./network-logical.nix ./network-ec2.nix -d ec2~
+~nixops deploy -d ec2~
+automatically *instantiate* the vms in ec2
+*populates* them with basic nixos ami images
+*deploys* the machines to run our desired trac deployment
+***** prerequisites
+need to create the security group (e.g. my-security-group) through the EC2 console
+must set the AWS_SECRET_ACCESS_KEY environment variable
+**** other environments
+in addition to physical machines, VirtualBox, and Amazon EC2, nixops also supports:
+- Google Computing Engine (GCE)
+- Hetzner
+- Azure (preliminary support in development version of nixops)
+**** multi-cloud
+it is not required to deploy all vms in the same IaaS environment
+i.e. you could also deploy the first machine to ec2, the econd to hetzner, and the third to a physical machine
+*** sys-admin
+in addition to deploying system configuratons, nixops can be used to perform many other kinds of system administration tasks that work on machine level
+** sources
+http://sandervanderburg.blogspot.com/2015/03/on-nixops-disnix-service-deployment-and.html
