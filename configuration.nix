@@ -9,6 +9,7 @@
 
   # Usual grub stuff and enabling zfs support
   boot = {
+    kernelModules = [ "batman-adv" ];
     loader.grub = {
         enable = true;
         version = 2;
@@ -52,9 +53,11 @@
   };
 
   environment.systemPackages = with pkgs; [
+    batctl
     chromium
     erlang
     git
+    linuxPackages.batman_adv
     nixops # only used by thinkpad-1 at this point
     python
   ];
