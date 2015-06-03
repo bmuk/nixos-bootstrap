@@ -43,7 +43,7 @@
       isNormalUser = true;
       home = "/home/student";
       description = "Student";
-      extraGroups = [ "wheel" "networkmanager" ];
+      extraGroups = [ "wheel" "networkmanager" "dialout" ];
       password = "cybersecuritylab";
       openssh.authorizedKeys.keys = [
         "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbWaTXfa7ut/bXssVNa/6ujpkk9jlVpcjJqq7RFtJ7aeJEC3EV97V4WeyqE9CUj3C8GD5QwaBVih7FpWHkk9eLA55rNVmTs9VV+M7OHrbituMPs/JF9KOVRcyRasFWQc2+u4RnxxOShiTiNIE8irp/dTJKb4IdvLY3WLR6l3p7ph+QxAlf/LD9lhZTCHfL/1+AL6atM4OH5J4Zh7KINMCN4dnTgF0gRRlabdSRDA1WPT1o39qq3n+pd44FQ9+6ZHvjR6Zk+RPM8c6IlsRcgzjqqtwxudVOPUMJPlCsYc9Fk4Jx2zijkutLD0HVVYkVe/XNB0mgX5COx/gZhaDSnVlf student@thinkpad-1"
