@@ -53,6 +53,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    arduino
     batctl
     chromium
     erlang
