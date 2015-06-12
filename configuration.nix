@@ -71,6 +71,7 @@
     openssh = {
       enable = true;
     };
+    mongodb.enable = true;
     xserver = {
       enable = true;
       desktopManager = {
