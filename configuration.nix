@@ -64,6 +64,22 @@
     python
   ];
 
+  systemd.services.mesh = {
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network.target" ];
+    serviceConfig = {
+      Type = "forking";
+      ExecStart = ''
+        ${pkgs.coreutils}/bin/touch /servicestarted
+        ${pkgs.coreutils}/bin/touch /thisisanotherline
+      '';
+      ExecStop = ''
+        ${pkgs.coreutils}/bin/rm /servicestarted
+        ${pkgs.coreutils}/bin/rm /thisisanotherline
+      '';
+    };
+  };
+
   services = {
     openssh = {
       enable = true;
