@@ -21,7 +21,10 @@
   # hostname gets defined by the install script
   # need them to respond to pings to know they are on when the lid is closed
   networking = {
-    networkmanager.enable = true;
+    useDHCP = true;
+    interfaces = {
+      
+    };
     firewall.allowPing = true;
   };
 
@@ -59,6 +62,7 @@
     erlang
     git
     linuxPackages.batman_adv
+    mongodb
     nixops # only used by thinkpad-1 at this point
     python
   ];
