@@ -21,10 +21,7 @@
   # hostname gets defined by the install script
   # need them to respond to pings to know they are on when the lid is closed
   networking = {
-    useDHCP = true;
-    interfaces = {
-      
-    };
+    networkmanager.enable = true;
     firewall.allowPing = true;
   };
 
